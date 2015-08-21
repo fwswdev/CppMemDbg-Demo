@@ -31,6 +31,8 @@ License: GNU GPL v3 (attached, read above)
 Notes: Read cppMemDbg.h notes.
 *************************************************************************************************/
 
+#include "stdafx.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <malloc.h>
