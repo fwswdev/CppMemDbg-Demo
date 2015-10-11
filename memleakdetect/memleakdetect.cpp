@@ -12,6 +12,7 @@ using namespace std;
 
 
 #define SHARED_PTR  boost::shared_ptr // TODO: use typedef on this one
+#define WEAK_PTR  boost::weak_ptr // TODO: use typedef on this one
 
 class TestClass
 {
@@ -41,14 +42,25 @@ class Child; // forward reference
 class Parent
 {
 public:
-	Parent(string name, SHARED_PTR<Child> child)
+	Parent(string name)
+	{
+		this->name = name;
+		cout << "Parent constructor " << name;
+	}
+
+	~Parent()
+	{
+		cout << "Parent destructor " << name;
+	}
+
+	void SetChild(SHARED_PTR<Child> child)
 	{
 		this->child = child;
-		this->name = name;
 	}
 
 private:
-	SHARED_PTR<Child> child;
+	//SHARED_PTR<Child> child; // this will cause memory leak
+	WEAK_PTR<Child> child; // this will not cause memory leak
 	string name;
 };
 
@@ -75,6 +87,18 @@ private:
 };
 
 
+void BoostSharedPtrExample()
+{
+	SHARED_PTR<Parent> mom(new Parent("mom"));
+	SHARED_PTR<Parent> dad(new Parent("dad"));
+
+	SHARED_PTR<Child> child(new Child("myChild", mom, dad));
+	mom->SetChild(child);
+	dad->SetChild(child);
+
+}
+
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	{
@@ -82,6 +106,8 @@ int _tmain(int argc, _TCHAR* argv[])
 		TestClass tc;
 		cout << tc.getString();
 	}
+
+	//BoostSharedPtrExample();
 
 	Sleep(100);
 	PrintMemoryLeakInfo();
