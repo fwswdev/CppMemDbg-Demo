@@ -107,7 +107,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		cout << tc.getString();
 	}
 
-	//BoostSharedPtrExample();
+	BoostSharedPtrExample();
 
 	Sleep(100);
 	PrintMemoryLeakInfo();
